@@ -1,0 +1,70 @@
+body{
+    background-image: url(imagenes/tapete.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.contenido_juego{
+    width: 50%;
+    padding-top: 150px;
+    margin: auto;
+}
+
+#nombre{
+    font-size: 50px;
+    background-color: #0000003d;
+    color: white;
+    border-radius: 25px;
+    text-align: center;
+    font-family: 'Barlow';
+    font-weight: 800;
+    padding-bottom: 5px;
+}
+
+#btn_DameCarta{
+    background-color: #000;
+    color: white;
+    border: 0px;
+    padding: 15px;
+    border-radius: 14px;
+    font-size: 20px;
+}
+
+#btn_Parar{
+    background-color: #800000;
+    color: white;
+    border: 0px;
+    padding: 15px;
+    border-radius: 14px;
+    font-size: 20px;
+}
+
+#btn_Reset{
+    background-color: #006680;
+    color: white;
+    border: 0px;
+    padding: 15px;
+    border-radius: 14px;
+    font-size: 20px;
+
+}
+
+#banca, #total_banca, #jugador, #total_jugador {
+    font-size: 20px;
+    color: white;
+    font-family: 'Barlow';
+}
+
+.fontBolder {
+    font-weight: bolder;
+}
+
+#resultado{
+    font-size: 40px;
+    color: white;
+    font-family: 'Barlow';
+    background-color: #0000003d;
+    border-radius: 14px;
+    padding-bottom: 5px;
+
+}

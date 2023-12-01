@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BlackJack</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;600;800&display=swap');
+        </style>
+</head>
+<body>
+    <div class="contenido_juego">
+    <p id="nombre"></p>
+    <p id="banca">Cartas de la banca: </p>
+    <p id="total_banca" class="fontBolder"></p>
+    <p id="jugador">Cartas del jugador: </p>
+    <p id="total_jugador" class="fontBolder"></p>
+    <p style="text-align: center;font-weight: bold;" id="resultado"></p>
+    <button id="btn_DameCarta">Dame Carta</button>
+    <button id="btn_Parar">Parar</button>
+
+    <button id="btn_Reset" style="display:none;">Volver a jugar</button>
+
+</div>
+
+
+    <script>
+        let baraja = [
+                        {"carta":"imagenes/PICAS/AS_PICAS.png", "valor":1},
+                        {"carta":"imagenes/TREBOL/AS_TREBOL.png", "valor":1},
+                        {"carta":"imagenes/CORAZONES/AS_CORAZONES.png", "valor":1},
+                        {"carta":"imagenes/DIAMANTES/AS_DIAMANTE.png", "valor":1},
+                        {"carta":"imagenes/PICAS/2_PICAS.png", "valor":2},
+                        {"carta":"imagenes/TREBOL/2_TREBOL.png", "valor":2},
+                        {"carta":"imagenes/CORAZONES/2_CORAZONES.png", "valor":2},
+                        {"carta":"imagenes/DIAMANTES/2_DIAMANTE.png", "valor":2},
+                        {"carta":"imagenes/PICAS/3_PICAS.png", "valor":3},
+                        {"carta":"imagenes/TREBOL/3_TREBOL.png", "valor":3},
+                        {"carta":"imagenes/CORAZONES/3_CORAZONES.png", "valor":3},
+                        {"carta":"imagenes/DIAMANTES/3_DIAMANTE.png", "valor":3},
+                        {"carta":"imagenes/PICAS/4_PICAS.png", "valor":4},
+                        {"carta":"imagenes/TREBOL/4_TREBOL.png", "valor":4},
+                        {"carta":"imagenes/CORAZONES/4_CORAZONES.png", "valor":4},
+                        {"carta":"imagenes/DIAMANTES/4_DIAMANTE.png", "valor":4},
+                        {"carta":"imagenes/PICAS/5_PICAS.png", "valor":5},
+                        {"carta":"imagenes/TREBOL/5_TREBOL.png", "valor":5},
+                        {"carta":"imagenes/CORAZONES/5_CORAZONES.png", "valor":5},
+                        {"carta":"imagenes/DIAMANTES/5_DIAMANTE.png", "valor":5},
+                        {"carta":"imagenes/PICAS/6_PICAS.png", "valor":6},
+                        {"carta":"imagenes/TREBOL/6_TREBOL.png", "valor":6},
+                        {"carta":"imagenes/CORAZONES/6_CORAZONES.png", "valor":6},
+                        {"carta":"imagenes/DIAMANTES/6_DIAMANTE.png", "valor":6},
+                        {"carta":"imagenes/PICAS/7_PICAS.png", "valor":7},
+                        {"carta":"imagenes/TREBOL/7_TREBOL.png", "valor":7},
+                        {"carta":"imagenes/CORAZONES/7_CORAZONES.png", "valor":7},
+                        {"carta":"imagenes/DIAMANTES/7_DIAMANTE.png", "valor":7},
+                        {"carta":"imagenes/PICAS/8_PICAS.png", "valor":8},
+                        {"carta":"imagenes/TREBOL/8_TREBOL.png", "valor":8},
+                        {"carta":"imagenes/CORAZONES/8_CORAZONES.png", "valor":8},
+                        {"carta":"imagenes/DIAMANTES/8_DIAMANTE.png", "valor":8},
+                        {"carta":"imagenes/PICAS/9_PICAS.png", "valor":9},
+                        {"carta":"imagenes/TREBOL/9_TREBOL.png", "valor":9},
+                        {"carta":"imagenes/CORAZONES/9_CORAZONES.png", "valor":9},
+                        {"carta":"imagenes/DIAMANTES/9_DIAMANTE.png", "valor":9},
+                        {"carta":"imagenes/PICAS/10_PICAS.png", "valor":10},
+                        {"carta":"imagenes/TREBOL/10_TREBOL.png", "valor":10},
+                        {"carta":"imagenes/CORAZONES/10_CORAZONES.png", "valor":10},
+                        {"carta":"imagenes/DIAMANTES/10_DIAMANTE.png", "valor":10},
+                        {"carta":"imagenes/PICAS/J_PICAS.png", "valor":11},
+                        {"carta":"imagenes/TREBOL/J_TREBOL.png", "valor":11},
+                        {"carta":"imagenes/CORAZONES/J_CORAZONES.png", "valor":11},
+                        {"carta":"imagenes/DIAMANTES/J_DIAMANTE.png", "valor":11},
+                        {"carta":"imagenes/PICAS/Q_PICAS.png", "valor":11},
+                        {"carta":"imagenes/TREBOL/Q_TREBOL.png", "valor":11},
+                        {"carta":"imagenes/CORAZONES/Q_CORAZONES.png", "valor":11},
+                        {"carta":"imagenes/DIAMANTES/Q_DIAMANTE.png", "valor":11},
+                        {"carta":"imagenes/PICAS/K_PICAS.png", "valor":11},
+                        {"carta":"imagenes/TREBOL/K_TREBOL.png", "valor":11},
+                        {"carta":"imagenes/CORAZONES/K_CORAZONES.png", "valor":11},
+                        {"carta":"imagenes/DIAMANTES/ K_DIAMANTE.png", "valor":11}
+                    ];
+        let nombre = prompt("Por favor inserte el nombre del jugador",);
+        let banca = {"cartas": [], "total":0, "nombreHtml":"banca"};
+        let jugador = {"cartas": [], "total":0, "nombreHtml":"jugador"};
+        JuegaBanca();
+        JuegaJugador();
+
+        function DameCarta() {
+            let random = Math.floor(Math.random()*(baraja.length-1));
+            let carta =  baraja[random];
+            baraja.splice(random, 1);
+            return carta;
+        }
+
+        function SolicitaCarta() {
+            let carta = DameCarta();
+            jugador.cartas.push(carta);
+            jugador.total = jugador.total + carta.valor;
+            document.getElementById("jugador").innerHTML = document.getElementById("jugador").innerHTML + "<img style='margin-right:5px;' src=" + carta.carta + ">";
+            document.getElementById("total_jugador").innerHTML ="Valor total jugador: " + jugador.total;
+           
+            if (jugador.total > 21) {   
+                Parar();     
+            }
+
+        }
+
+        function JuegaBanca() {
+            Jugar(banca);
+            while (banca.total < 18) {
+                let carta = DameCarta();
+                banca.cartas.push(carta);
+                banca.total = banca.total + carta.valor;
+                document.getElementById("banca").innerHTML = document.getElementById("banca").innerHTML + "<img style='margin-right:5px;' src=" + carta.carta + ">";
+            }
+            document.getElementById("total_banca").innerHTML ="Valor total banca: " + banca.total;
+                  
+        }
+
+        function JuegaJugador() {
+            Jugar(jugador);
+            document.getElementById("total_jugador").innerHTML ="Valor total jugador: " + jugador.total;
+            if (jugador.total > 21) {   
+                Parar();     
+            }
+        }
+        
+        function Jugar(quienJuega) {
+            let carta1 = DameCarta();
+            quienJuega.cartas.push(carta1);
+            quienJuega.total = quienJuega.total + carta1.valor;
+
+            let carta2 = DameCarta();
+            quienJuega.cartas.push(carta2);
+            document.getElementById(quienJuega.nombreHtml).innerHTML = document.getElementById(quienJuega.nombreHtml).innerHTML + "<br><br><img style='margin-right:5px;' src=" + carta1.carta + ">  <img style='margin-right:5px;' src=" + carta2.carta + "> ";
+            quienJuega.total = quienJuega.total + carta2.valor;
+        }
+        
+
+        function Parar() {
+        //     // comprobamos quien ha ganado (en que se acerque más a 21 sin pasarse)
+        //     // parar debe saltar solo si se da al boton parar o si se pasa el jugador de 21
+            if (jugador.total > 21) {
+                document.getElementById("resultado").innerHTML ="Gana la banca";
+            } else {
+                if (banca.total > 21) {
+                    document.getElementById("resultado").innerHTML ="Gana "+ nombre + "!!";
+                } else {
+                    if (jugador.total > banca.total) {
+                        document.getElementById("resultado").innerHTML ="Gana "+ nombre + "!!";
+                    } else if (jugador.total < banca.total) {
+                        document.getElementById("resultado").innerHTML ="Gana la banca";
+                    } else {
+                        document.getElementById("resultado").innerHTML ="Hay un empate";
+                    }
+                }
+            }
+            document.getElementById("btn_Reset").style.display = "block";
+            document.getElementById("btn_DameCarta").style.display = "none";
+            document.getElementById("btn_Parar").style.display = "none";
+            
+        }
+        
+        if (nombre != null) {
+        document.getElementById("nombre").innerHTML = "Jugador:  " + nombre;
+        }
+
+        document.getElementById("btn_DameCarta").addEventListener("click",function (e) {
+            SolicitaCarta();
+        });
+        document.getElementById("btn_Parar").addEventListener("click",function (e) {
+            Parar();
+        });
+        document.getElementById("btn_Reset").addEventListener("click",function (e) {
+            window.location.reload();
+        });
+    </script>
+    
+</body>
+</html>
