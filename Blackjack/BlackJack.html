@@ -11,17 +11,18 @@
 </head>
 <body>
     <div class="contenido_juego">
+    <div class="juego" style="display:none;">
     <p id="nombre"></p>
     <p id="banca">Cartas de la banca: </p>
     <p id="total_banca" class="fontBolder"></p>
     <p id="jugador">Cartas del jugador: </p>
     <p id="total_jugador" class="fontBolder"></p>
     <p style="text-align: center;font-weight: bold;" id="resultado"></p>
-    <button id="btn_DameCarta">Dame Carta</button>
-    <button id="btn_Parar">Parar</button>
+    <button id="btn_DameCarta">Pedir Carta</button>
+    <button id="btn_Parar">Plantarse</button>
 
     <button id="btn_Reset" style="display:none;">Volver a jugar</button>
-
+</div>
 </div>
 
 
@@ -80,11 +81,13 @@
                         {"carta":"imagenes/CORAZONES/K_CORAZONES.png", "valor":11},
                         {"carta":"imagenes/DIAMANTES/ K_DIAMANTE.png", "valor":11}
                     ];
-        let nombre = prompt("Por favor inserte el nombre del jugador",);
         let banca = {"cartas": [], "total":0, "nombreHtml":"banca"};
         let jugador = {"cartas": [], "total":0, "nombreHtml":"jugador"};
+
+        let nombre = prompt("Por favor inserte el nombre del jugador",);
+        debugger;
+        document.getElementsByClassName("juego")[0].style.display = "block";
         JuegaBanca();
-        JuegaJugador();
 
         function DameCarta() {
             let random = Math.floor(Math.random()*(baraja.length-1));
@@ -100,7 +103,7 @@
             document.getElementById("jugador").innerHTML = document.getElementById("jugador").innerHTML + "<img style='margin-right:5px;' src=" + carta.carta + ">";
             document.getElementById("total_jugador").innerHTML ="Valor total jugador: " + jugador.total;
            
-            if (jugador.total > 21) {   
+            if (jugador.total >= 21) {   
                 Parar();     
             }
 
@@ -115,13 +118,17 @@
                 document.getElementById("banca").innerHTML = document.getElementById("banca").innerHTML + "<img style='margin-right:5px;' src=" + carta.carta + ">";
             }
             document.getElementById("total_banca").innerHTML ="Valor total banca: " + banca.total;
-                  
+            if (banca.total > 21) {
+                Parar();  
+            } else {
+                JuegaJugador();
+            }
         }
 
         function JuegaJugador() {
             Jugar(jugador);
             document.getElementById("total_jugador").innerHTML ="Valor total jugador: " + jugador.total;
-            if (jugador.total > 21) {   
+            if (jugador.total >= 21) {   
                 Parar();     
             }
         }
@@ -136,7 +143,6 @@
             document.getElementById(quienJuega.nombreHtml).innerHTML = document.getElementById(quienJuega.nombreHtml).innerHTML + "<br><br><img style='margin-right:5px;' src=" + carta1.carta + ">  <img style='margin-right:5px;' src=" + carta2.carta + "> ";
             quienJuega.total = quienJuega.total + carta2.valor;
         }
-        
 
         function Parar() {
         //     // comprobamos quien ha ganado (en que se acerque más a 21 sin pasarse)
